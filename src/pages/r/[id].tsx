@@ -1,9 +1,8 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import storage from "../../storage";
 
-import mockConfig from "../../mockConfig.json";
-
-type RepositoryConfig = any;
+import { RepositoryConfig } from "../../types";
 
 const Repository: NextPage<{
   repositoryConfig: RepositoryConfig;
@@ -24,7 +23,13 @@ const Repository: NextPage<{
 const getRepositoryConfig = async (
   id: string
 ): Promise<RepositoryConfig | null> => {
-  return mockConfig;
+  try {
+    const value = await storage.getValue(id);
+
+    return value;
+  } catch (err) {
+    return null;
+  }
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
