@@ -1,1 +1,1 @@
-export type RepositoryConfig = any;
+export type RepositoryConfig = { username: string; repositoryName: string };
