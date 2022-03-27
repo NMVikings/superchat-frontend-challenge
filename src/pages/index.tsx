@@ -3,9 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 
-import { RepositoryConfig } from "../types";
+import { RepositoryPageConfig } from "../types";
 
-const addNewConfig = async (config: RepositoryConfig) => {
+const addNewConfig = async (config: RepositoryPageConfig) => {
   const response = await fetch("/api/configs", {
     method: "POST",
     body: JSON.stringify(config),

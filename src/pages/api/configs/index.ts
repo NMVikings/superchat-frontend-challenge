@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import type { NextApiRequest, NextApiResponse } from "next";
-import storage from "../../../storage";
+import storageApi from "../../../api/storage";
 
 type Data = {
   id: string;
@@ -13,7 +13,7 @@ export default async function handler(
   if (req.method === "POST") {
     const id = nanoid(6);
 
-    const response = await storage.addValue(id, req.body);
+    const response = await storageApi.addValue(id, req.body);
 
     if (response.ok) {
       res.send({ id });

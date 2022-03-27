@@ -1,30 +1,48 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import storage from "../../storage";
+import githubApi from "../../api/github";
+import storageApi from "../../api/storage";
 
-import { RepositoryConfig } from "../../types";
+import type { RepositoryPageConfig, RepositoryInfo } from "../../types";
 
 const Repository: NextPage<{
-  repositoryConfig: RepositoryConfig;
-}> = ({ repositoryConfig }) => {
+  repositoryPageConfig: RepositoryPageConfig;
+  repositoryInfo: RepositoryInfo;
+}> = ({ repositoryPageConfig, repositoryInfo }) => {
   return (
     <div>
       <Head>
-        <title>
-          {repositoryConfig.userName}/{repositoryConfig.repositoryName}
-        </title>
+        <title>{repositoryInfo.fullName}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <code>{JSON.stringify(repositoryConfig, null, 2)}</code>
+      <div>
+        <code>{JSON.stringify(repositoryPageConfig, null, 2)}</code>
+      </div>
+      <div>
+        <code>{JSON.stringify(repositoryInfo, null, 2)}</code>
+      </div>
     </div>
   );
 };
 
-const getRepositoryConfig = async (
+const getRepositoryPageConfig = async (
   id: string
-): Promise<RepositoryConfig | null> => {
+): Promise<RepositoryPageConfig | null> => {
   try {
-    const value = await storage.getValue(id);
+    const value = await storageApi.getValue(id);
+
+    return value;
+  } catch (err) {
+    return null;
+  }
+};
+
+const getRepositoryInfo = async (
+  username: string,
+  repositoryName: string
+): Promise<RepositoryInfo | null> => {
+  try {
+    const value = await githubApi.getRepository(username, repositoryName);
 
     return value;
   } catch (err) {
@@ -39,14 +57,21 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     };
   }
 
-  const repositoryConfig = await getRepositoryConfig(params.id);
+  const repositoryPageConfig = await getRepositoryPageConfig(params.id);
 
-  if (!repositoryConfig) {
+  if (!repositoryPageConfig) {
+    return { notFound: true };
+  }
+
+  const { username, repositoryName } = repositoryPageConfig;
+  const repositoryInfo = await getRepositoryInfo(username, repositoryName);
+
+  if (!repositoryInfo) {
     return { notFound: true };
   }
 
   return {
-    props: { repositoryConfig },
+    props: { repositoryPageConfig, repositoryInfo },
   };
 };
 

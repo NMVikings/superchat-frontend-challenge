@@ -15,10 +15,14 @@ class KeyValueStorage {
   public async getValue(key: string): Promise<any> {
     const url = this.getKeyUrl(key);
 
-    const response = await fetch(url);
-    const data = await response.json();
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
 
-    return data;
+      return data;
+    } catch (err) {
+      return null;
+    }
   }
 
   public async addValue(key: string, value: string) {
@@ -36,9 +40,9 @@ class KeyValueStorage {
   }
 }
 
-const storage = new KeyValueStorage({
+const storageApi = new KeyValueStorage({
   url: process.env.KEY_STORAGE_URL as string,
   writeAccessKey: process.env.STORAGE_WRITE_ACCESS_KEY as string,
 });
 
-export default storage;
+export default storageApi;
