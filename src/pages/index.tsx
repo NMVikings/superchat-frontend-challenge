@@ -1,6 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 
+import mockConfig from "../mockConfig.json";
+
 const Home: NextPage = () => {
   return (
     <div>
@@ -9,7 +11,7 @@ const Home: NextPage = () => {
         <meta name="description" content="CrazyGithubLinks" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      CrazyGithubLinks
+      <code>{JSON.stringify(mockConfig, null, 2)}</code>
     </div>
   );
 };
