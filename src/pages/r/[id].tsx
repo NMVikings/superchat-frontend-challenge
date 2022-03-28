@@ -57,7 +57,7 @@ const Repository: NextPage<{
                     {author}{" "}
                   </span>
                 </div>
-                <div>Description: {description}</div>
+                {description && <div>Description: {description}</div>}
               </div>
               <div>
                 <div className="flex items-center gap-1">

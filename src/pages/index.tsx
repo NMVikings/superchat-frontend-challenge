@@ -92,46 +92,28 @@ const Home: NextPage = () => {
                   >
                     Icon
                   </label>
-                  <div className="flex gap-3">
+                  <div className="flex gap-4">
                     <div className="flex gap-1 items-center">
                       <input
                         type="radio"
+                        defaultChecked
                         required
                         name="icon"
-                        id="icon"
                         value="✨"
                       />
-                      <span>✨</span>
+                      ✨
                     </div>
                     <div className="flex gap-1 items-center">
-                      <input
-                        type="radio"
-                        required
-                        name="icon"
-                        id="icon"
-                        value="🔥"
-                      />
+                      <input type="radio" required name="icon" value="🔥" />
                       🔥
                     </div>
                     <div className="flex gap-1 items-center">
-                      <input
-                        type="radio"
-                        required
-                        name="icon"
-                        id="icon"
-                        value="❤️"
-                      />
+                      <input type="radio" required name="icon" value="❤️" />
                       ❤️
                     </div>
 
                     <div className="flex gap-1 items-center">
-                      <input
-                        type="radio"
-                        required
-                        name="icon"
-                        id="icon"
-                        value="💕"
-                      />
+                      <input type="radio" required name="icon" value="💕" />
                       💕
                     </div>
                   </div>
