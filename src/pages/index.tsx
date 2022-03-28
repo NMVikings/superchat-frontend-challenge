@@ -8,33 +8,46 @@ import Label from "../components/Label";
 import RadioGroup from "../components/RadioGroup";
 import SuccessSubmit from "../components/SuccessSubmit";
 
-const Home: NextPage = () => {
+const useHandleForm = () => {
   const [linkId, setLinkId] = React.useState(null);
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    const form = new FormData(e.target as HTMLFormElement);
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> =
+    React.useCallback(
+      async (e) => {
+        e.preventDefault();
+        const form = new FormData(e.target as HTMLFormElement);
 
-    const username = form.get("username") as string;
-    const repositoryName = form.get("repositoryName") as string;
-    const icon = form.get("icon") as string;
+        const username = form.get("username") as string;
+        const repositoryName = form.get("repositoryName") as string;
+        const icon = form.get("icon") as string;
 
-    try {
-      setLoading(true);
-      setError(null);
+        try {
+          setLoading(true);
+          setError(null);
 
-      const { id } = await postNewConfig({ username, repositoryName, icon });
-      setLinkId(id);
-    } catch (err) {
-      const message = (err as Error)?.message ?? "Unknown error";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+          const { id } = await postNewConfig({
+            username,
+            repositoryName,
+            icon,
+          });
+          setLinkId(id);
+        } catch (err) {
+          const message = (err as Error)?.message ?? "Unknown error";
+          setError(message);
+        } finally {
+          setLoading(false);
+        }
+      },
+      [setError, setLoading]
+    );
 
+  return { linkId, error, loading, handleSubmit };
+};
+
+const Home: NextPage = () => {
+  const { linkId, error, loading, handleSubmit } = useHandleForm();
   return (
     <>
       <div className="px-4 sm:px-0 mb-10">
