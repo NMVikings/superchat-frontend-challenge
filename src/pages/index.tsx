@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 
@@ -20,6 +19,7 @@ const addNewConfig = async (config: RepositoryPageConfig) => {
 
 const Home: NextPage = () => {
   const [linkId, setLinkId] = React.useState(null);
+  const [copied, setCopied] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
 
@@ -43,6 +43,12 @@ const Home: NextPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const copyToClipboard = (path: string) => {
+    navigator.clipboard.writeText(window.location.origin + path);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 5000);
   };
 
   return (
@@ -133,12 +139,19 @@ const Home: NextPage = () => {
                   <Link href={`/r/${linkId}`}>
                     <a
                       target="_blank"
-                      className="text-teal-600 text-sm font-medium hover:text-teal-800"
+                      className="text-teal-600 text-sm font-medium hover:text-teal-800 mr-4"
                     >
                       Check the page
                     </a>
                   </Link>
-                  {/* TODO: Add posibility to share via one click */}
+                  <button
+                    type="button"
+                    disabled={copied}
+                    onClick={() => copyToClipboard(`/r/${linkId}`)}
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none disabled:bg-indigo-400 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    {copied ? "Copied" : "Copy link"}
+                  </button>
                 </div>
               ) : (
                 <>
