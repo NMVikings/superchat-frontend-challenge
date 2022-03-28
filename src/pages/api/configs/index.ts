@@ -29,6 +29,6 @@ export default async function handler(
 
     res.status(response.status).end();
   } else {
-    // Handle any other HTTP method
+    res.status(405).end();
   }
 }
