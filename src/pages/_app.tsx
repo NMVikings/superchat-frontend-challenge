@@ -6,7 +6,7 @@ import "../styles/global.css";
 function MyApp({ Component, pageProps }: AppProps) {
   const title = "CrazyGithubLinks";
   const description = "Best promo page for your repository";
-  const imageUrl = "https://ibb.co/FJWF3fv";
+  const imageUrl = "https://gcdnb.pbrd.co/images/0Yj0VsSgOBRS.jpg";
   return (
     <>
       <Head>
