@@ -26,10 +26,11 @@ const Home: NextPage = () => {
 
     const username = form.get("username") as string;
     const repositoryName = form.get("repositoryName") as string;
+    const icon = form.get("icon") as string;
 
     try {
       setLoading(true);
-      const { id } = await addNewConfig({ username, repositoryName });
+      const { id } = await addNewConfig({ username, repositoryName, icon });
       setLinkId(id);
     } catch (err) {
       // TODO: handle errors
@@ -58,8 +59,8 @@ const Home: NextPage = () => {
         <form onSubmit={handleSubmit}>
           <div className="shadow overflow-hidden sm:rounded-md">
             <div className="px-4 py-5 bg-white sm:p-6">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
+              <div className="grid grid-cols-2 grid-rows-2 gap-6">
+                <div className="col-span-2 sm:col-span-1">
                   <label
                     className="block text-sm font-medium text-gray-700"
                     htmlFor="username"
@@ -74,10 +75,10 @@ const Home: NextPage = () => {
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
                 </div>
-                <div className="col-span-6 sm:col-span-3">
+                <div className="col-span-2 sm:col-span-1">
                   <label
                     className="block text-sm font-medium text-gray-700"
-                    htmlFor="repository-name"
+                    htmlFor="repositoryName"
                   >
                     Repository name
                   </label>
@@ -85,9 +86,60 @@ const Home: NextPage = () => {
                     type="text"
                     required
                     name="repositoryName"
-                    id="repository-name"
+                    id="repositoryName"
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                  <label
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                    htmlFor="icon"
+                  >
+                    Icon
+                  </label>
+                  <div className="flex gap-3">
+                    <div className="flex gap-1 items-center">
+                      <input
+                        type="radio"
+                        required
+                        name="icon"
+                        id="icon"
+                        value="✨"
+                      />
+                      <span>✨</span>
+                    </div>
+                    <div className="flex gap-1 items-center">
+                      <input
+                        type="radio"
+                        required
+                        name="icon"
+                        id="icon"
+                        value="🔥"
+                      />
+                      🔥
+                    </div>
+                    <div className="flex gap-1 items-center">
+                      <input
+                        type="radio"
+                        required
+                        name="icon"
+                        id="icon"
+                        value="❤️"
+                      />
+                      ❤️
+                    </div>
+
+                    <div className="flex gap-1 items-center">
+                      <input
+                        type="radio"
+                        required
+                        name="icon"
+                        id="icon"
+                        value="💕"
+                      />
+                      💕
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

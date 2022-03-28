@@ -10,7 +10,7 @@ import Image from "next/image";
 const Repository: NextPage<{
   repositoryPageConfig: RepositoryPageConfig;
   repositoryInfo: RepositoryInfo;
-}> = ({ repositoryInfo }) => {
+}> = ({ repositoryInfo, repositoryPageConfig }) => {
   const {
     owner: { login: author, avatar_url },
     description,
@@ -20,19 +20,22 @@ const Repository: NextPage<{
     open_issues_count,
     html_url,
   } = repositoryInfo;
+  const { icon = "✨" } = repositoryPageConfig;
+
+  const title = [icon, name, icon].join(" ");
 
   return (
     <div className="bg-gray-100 w-screen mx-auto py-6 px-6 lg:px-8 flex justify-center h-screen">
       <div className="mt-12 sm:flex-grow max-w-xl">
         <Head>
-          <title>✨{name}✨</title>
+          <title>{title}</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <div className="shadow overflow-hidden sm:rounded-md">
           <div className="px-4 py-5 bg-white sm:p-6">
             <div className="grid gap-6 grid-cols-3 grid-row-3">
               <h1 className="w-100 text-center text-3xl mb-4 break-normal col-span-3">
-                ✨ {name} ✨
+                {title}
               </h1>
               <div className="col-span-2">
                 <div className="flex gap-1">

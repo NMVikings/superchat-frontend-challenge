@@ -1,4 +1,8 @@
-export type RepositoryPageConfig = { username: string; repositoryName: string };
+export type RepositoryPageConfig = {
+  username: string;
+  repositoryName: string;
+  icon: string;
+};
 
 export type RepositoryInfo = {
   owner: { login: string; avatar_url: string };
