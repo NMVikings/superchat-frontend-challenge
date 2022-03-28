@@ -1,11 +1,15 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import { StarIcon, HeartIcon, DocumentIcon } from "@heroicons/react/outline";
-import githubApi from "../../api/github";
-import storageApi from "../../api/storage";
 
 import type { RepositoryPageConfig, RepositoryInfo } from "../../types";
-import Image from "next/image";
+import ButtonLink from "../../components/ButtonLink";
+import {
+  checkCanSponsorUser,
+  getRepositoryInfo,
+  getRepositoryPageConfig,
+} from "../../api/server";
 
 const Repository: NextPage<{
   repositoryPageConfig: RepositoryPageConfig;
@@ -72,29 +76,22 @@ const Repository: NextPage<{
               </div>
             </div>
             <div className="col-span-3 flex gap-2 mt-3">
-              <a
-                href={html_url}
-                target="_blank"
-                rel="noreferrer"
-                className="p-1 px-2 border hover:ring-indigo-500 hover:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md cursor-pointer"
-              >
+              <ButtonLink href={html_url} target="_blank" rel="noreferrer">
                 <span className="flex items-center gap-1">
                   <StarIcon className="h-5 w-5 text-yellow-500" /> Star
                 </span>
-              </a>
+              </ButtonLink>
               {canSponsor && (
-                <a
+                <ButtonLink
                   href={`https://github.com/sponsors/${author}`}
-                  // TODO check is it possible to sponsor someone check the response url
                   target="_blank"
                   rel="noreferrer"
-                  className="p-1 px-2 border hover:ring-indigo-500 hover:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md cursor-pointer"
                 >
                   <span className="flex items-center gap-1">
                     <HeartIcon className="h-5 w-5 text-pink-500" /> Become
                     sponsor
                   </span>
-                </a>
+                </ButtonLink>
               )}
             </div>
           </div>
@@ -102,31 +99,6 @@ const Repository: NextPage<{
       </div>
     </>
   );
-};
-
-const getRepositoryPageConfig = async (
-  id: string
-): Promise<RepositoryPageConfig | null> => {
-  try {
-    const value = await storageApi.getValue(id);
-
-    return value;
-  } catch (err) {
-    return null;
-  }
-};
-
-const getRepositoryInfo = async (
-  username: string,
-  repositoryName: string
-): Promise<RepositoryInfo | null> => {
-  try {
-    const value = await githubApi.getRepository(username, repositoryName);
-
-    return value;
-  } catch (err) {
-    return null;
-  }
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -148,12 +120,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   if (!repositoryInfo) {
     return { notFound: true };
   }
-  const sponsoredUrl = `https://github.com/sponsors/${username}`;
-  const { url } = await fetch(sponsoredUrl, {
-    headers: { "Content-Length": "0" },
-  });
-
-  const canSponsor = url === sponsoredUrl;
+  const canSponsor = await checkCanSponsorUser(username);
 
   return {
     props: { repositoryPageConfig, repositoryInfo, id: params.id, canSponsor },
