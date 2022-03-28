@@ -30,6 +30,7 @@ const Repository: NextPage<{
         <Head>
           <title>{title}</title>
           <link rel="icon" href="/favicon.ico" />
+          <meta property="og:title" content={title} />
         </Head>
         <div className="shadow overflow-hidden sm:rounded-md">
           <div className="px-4 py-5 bg-white sm:p-6">

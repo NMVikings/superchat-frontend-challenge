@@ -42,11 +42,6 @@ const Home: NextPage = () => {
   return (
     <div className="bg-gray-100 w-screen mx-auto py-6 px-6 lg:px-8 flex justify-center h-screen">
       <div className="mt-12 sm:flex-grow max-w-xl">
-        <Head>
-          <title>CrazyGithubLinks</title>
-          <meta name="description" content="CrazyGithubLinks" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
         <div className="px-4 sm:px-0 mb-10">
           <h3 className="text-lg font-medium leading-6 text-gray-900">
             CrazyGithubLinks
