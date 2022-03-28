@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>CrazyGithubLinks</title>
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={window.location.href} />
+        {/* <meta property="og:url" content={window.location.href} /> */}
         <meta property="og:image" content="https://ibb.co/FJWF3fv" />
         <meta name="description" content="CrazyGithubLinks" />
         <meta name="twitter:title" content="European Travel Destinations " />
