@@ -10,7 +10,8 @@ import Image from "next/image";
 const Repository: NextPage<{
   repositoryPageConfig: RepositoryPageConfig;
   repositoryInfo: RepositoryInfo;
-}> = ({ repositoryInfo, repositoryPageConfig }) => {
+  id: string;
+}> = ({ repositoryInfo, repositoryPageConfig, id }) => {
   const {
     owner: { login: author, avatar_url },
     description,
@@ -30,7 +31,11 @@ const Repository: NextPage<{
         <Head>
           <title>{title}</title>
           <link rel="icon" href="/favicon.ico" />
+          <meta property="og:url" content={`${process.env.BASE_URL}/r/${id}`} />
           <meta property="og:title" content={title} />
+          <meta property="og:description" content={description} />
+          <meta name="twitter:title" content={title} />
+          <meta name="twitter:description" content={description} />
         </Head>
         <div className="shadow overflow-hidden sm:rounded-md">
           <div className="px-4 py-5 bg-white sm:p-6">
@@ -144,7 +149,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
 
   return {
-    props: { repositoryPageConfig, repositoryInfo },
+    props: { repositoryPageConfig, repositoryInfo, id: params.id },
   };
 };
 
