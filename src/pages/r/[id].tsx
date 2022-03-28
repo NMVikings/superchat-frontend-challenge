@@ -11,7 +11,8 @@ const Repository: NextPage<{
   repositoryPageConfig: RepositoryPageConfig;
   repositoryInfo: RepositoryInfo;
   id: string;
-}> = ({ repositoryInfo, repositoryPageConfig, id }) => {
+  canSponsor: boolean;
+}> = ({ repositoryInfo, repositoryPageConfig, id, canSponsor }) => {
   const {
     owner: { login: author, avatar_url },
     description,
@@ -82,18 +83,20 @@ const Repository: NextPage<{
                     <StarIcon className="h-5 w-5 text-yellow-500" /> Star
                   </span>
                 </a>
-                <a
-                  href={`https://github.com/sponsors/${author}`}
-                  // TODO check is it possible to sponsor someone check the response url
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-1 px-2 border hover:ring-indigo-500 hover:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md cursor-pointer"
-                >
-                  <span className="flex items-center gap-1">
-                    <HeartIcon className="h-5 w-5 text-pink-500" /> Become
-                    sponsor
-                  </span>
-                </a>
+                {canSponsor && (
+                  <a
+                    href={`https://github.com/sponsors/${author}`}
+                    // TODO check is it possible to sponsor someone check the response url
+                    target="_blank"
+                    rel="noreferrer"
+                    className="p-1 px-2 border hover:ring-indigo-500 hover:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md cursor-pointer"
+                  >
+                    <span className="flex items-center gap-1">
+                      <HeartIcon className="h-5 w-5 text-pink-500" /> Become
+                      sponsor
+                    </span>
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -147,9 +150,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   if (!repositoryInfo) {
     return { notFound: true };
   }
+  const sponsoredUrl = `https://github.com/sponsors/${username}`;
+  const { url } = await fetch(sponsoredUrl, {
+    headers: { "Content-Length": "0" },
+  });
+
+  const canSponsor = url === sponsoredUrl;
 
   return {
-    props: { repositoryPageConfig, repositoryInfo, id: params.id },
+    props: { repositoryPageConfig, repositoryInfo, id: params.id, canSponsor },
   };
 };
 
