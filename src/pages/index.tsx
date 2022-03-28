@@ -10,6 +10,9 @@ const addNewConfig = async (config: RepositoryPageConfig) => {
     method: "POST",
     body: JSON.stringify(config),
   });
+  if (response.status === 400) {
+    throw new Error("Repository wasn't found");
+  }
   const body = await response.json();
 
   return body;
@@ -17,12 +20,12 @@ const addNewConfig = async (config: RepositoryPageConfig) => {
 
 const Home: NextPage = () => {
   const [linkId, setLinkId] = React.useState(null);
+  const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const form = new FormData(e.target as HTMLFormElement);
-    // TODO: Check if this repository valid
 
     const username = form.get("username") as string;
     const repositoryName = form.get("repositoryName") as string;
@@ -30,10 +33,13 @@ const Home: NextPage = () => {
 
     try {
       setLoading(true);
+      setError(null);
+
       const { id } = await addNewConfig({ username, repositoryName, icon });
       setLinkId(id);
     } catch (err) {
-      // TODO: handle errors
+      const message = (err as Error)?.message ?? "Unknown error";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -135,13 +141,16 @@ const Home: NextPage = () => {
                   {/* TODO: Add posibility to share via one click */}
                 </div>
               ) : (
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none disabled:bg-indigo-400 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Create repository page
-                </button>
+                <>
+                  <span className="text-red-600 mr-4 text-sm">{error}</span>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none disabled:bg-indigo-400 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Create repository page
+                  </button>
+                </>
               )}
             </div>
           </div>
