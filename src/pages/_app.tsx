@@ -16,6 +16,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta property="og:description" content={description} />
         <meta property="og:url" content={process.env.BASE_URL} />
         <meta property="og:image" content={imageUrl} />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="800" />
+        <meta property="og:image:alt" content="A cool image of code" />
         <meta name="description" content={title} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
