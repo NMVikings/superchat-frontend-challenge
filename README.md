@@ -1,3 +1,5 @@
+<a href="https://codeclimate.com/github/NMVikings/superchat-frontend-challenge/maintainability"><img src="https://api.codeclimate.com/v1/badges/2f602fd80a8738e2e86c/maintainability" /></a>
+
 This is a [CrazyRepoPage](https://crazyrepopage.vercel.app) project
 
 Here you can create awesome page for your repository!!!
